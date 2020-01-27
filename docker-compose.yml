@@ -1,0 +1,52 @@
+version: "2"
+services:
+  db1:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: db-prod
+      MYSQL_USER: user
+      MYSQL_PASSWORD: test
+      MYSQL_ROOT_PASSWORD: test
+    volumes:
+      - persistent:/var/lib/mysql
+    networks:
+      - default
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db1:db
+    ports:
+      - 8000:80
+    environment:
+      MYSQL_USER: user
+      MYSQL_PASSWORD: test
+      MYSQL_ROOT_PASSWORD: test
+
+  db2:
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: db-big-data
+      MYSQL_USER: user
+      MYSQL_PASSWORD: test
+      MYSQL_ROOT_PASSWORD: test
+    volumes:
+      - persistent2:/var/lib/mysql
+    networks:
+      - default
+  phpmyadmin2:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db2:db
+    ports:
+      - 8001:80
+    environment:
+      MYSQL_USER: user
+      MYSQL_PASSWORD: test
+      MYSQL_ROOT_PASSWORD: test
+volumes:
+  persistent:
+  persistent2:
